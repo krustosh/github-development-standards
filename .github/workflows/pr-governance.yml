@@ -14,19 +14,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout shared standards
         uses: actions/checkout@v4
+        with:
+          repository: krustosh/github-development-standards
+          ref: v1.0.0
+          path: github-development-standards
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: github-development-standards/package-lock.json
 
-      - name: Install dependencies
+      - name: Install shared standards dependencies
+        working-directory: github-development-standards
         run: npm ci
 
       - name: Validate PR
+        working-directory: github-development-standards
         env:
           BRANCH_NAME: ${{ github.head_ref }}
           PR_BODY: ${{ github.event.pull_request.body }}
