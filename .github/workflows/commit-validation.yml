@@ -1,0 +1,59 @@
+name: Reusable Commit Validation
+
+on:
+  workflow_call:
+
+jobs:
+  validate-commits:
+    name: Validate Pull Request Commits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout shared standards
+        uses: actions/checkout@v4
+        with:
+          repository: krustosh/github-development-standards
+          ref: v1.0.2
+          path: github-development-standards
+
+      - name: Checkout pull request repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: github-development-standards/package-lock.json
+
+      - name: Install shared standards dependencies
+        working-directory: github-development-standards
+        run: npm ci
+
+      - name: Validate pull request commits
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t COMMITS < <(
+            git rev-list --reverse "${BASE_SHA}..${HEAD_SHA}"
+          )
+
+          if [ "${#COMMITS[@]}" -eq 0 ]; then
+            echo "✓ No commits found in pull request."
+            exit 0
+          fi
+
+          for COMMIT_SHA in "${COMMITS[@]}"; do
+            echo "Validating commit: ${COMMIT_SHA}"
+
+            git show -s --format=%B "${COMMIT_SHA}" > /tmp/commit-message.txt
+
+            node github-development-standards/scripts/validate-commit.js \
+              /tmp/commit-message.txt
+          done
