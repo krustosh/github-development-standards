@@ -5,9 +5,11 @@
   "description": "Reusable GitHub development standards and validation rules.",
   "scripts": {
     "validate:commit": "node scripts/validate-commit.js",
-    "validate:pr": "node scripts/validate-pr.js"
+    "validate:pr": "node scripts/validate-pr.js",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "yaml": "^2.9.0"
   }
 }
