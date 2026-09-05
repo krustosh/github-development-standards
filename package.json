@@ -1,0 +1,13 @@
+{
+  "name": "github-development-standards",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable GitHub development standards and validation rules.",
+  "scripts": {
+    "validate:commit": "node scripts/validate-commit.js",
+    "validate:pr": "node scripts/validate-pr.js"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.0"
+  }
+}
