@@ -25,9 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: github-development-standards/package-lock.json
-
       - name: Install shared standards dependencies
         working-directory: github-development-standards
         run: npm ci
