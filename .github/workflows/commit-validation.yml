@@ -52,6 +52,9 @@ jobs:
 
             git show -s --format=%B "${COMMIT_SHA}" > /tmp/commit-message.txt
 
-            node github-development-standards/scripts/validate-commit.js \
-              /tmp/commit-message.txt
-          done
+            (
+              cd github-development-standards
+              node scripts/validate-commit.js \
+                /tmp/commit-message.txt
+            )
+        
