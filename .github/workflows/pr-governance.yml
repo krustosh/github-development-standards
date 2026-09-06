@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: krustosh/github-development-standards
-          ref: v1.0.0
+          ref: v1.0.3
           path: github-development-standards
 
       - name: Setup Node.js

@@ -9,22 +9,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout shared standards
-        uses: actions/checkout@v4
-        with:
-          repository: krustosh/github-development-standards
-          ref: v1.0.2
-          path: github-development-standards
-
       - name: Checkout pull request repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Checkout shared standards
+        uses: actions/checkout@v4
+        with:
+          repository: krustosh/github-development-standards
+          ref: v1.0.3
+          path: github-development-standards
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
+
       - name: Install shared standards dependencies
         working-directory: github-development-standards
         run: npm ci
