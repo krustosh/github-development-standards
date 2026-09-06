@@ -38,9 +38,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          mapfile -t COMMITS < <(
-            git rev-list --reverse "${BASE_SHA}..${HEAD_SHA}"
-          )
+          mapfile -t COMMITS < <(git rev-list --reverse "${BASE_SHA}..${HEAD_SHA}")
 
           if [ "${#COMMITS[@]}" -eq 0 ]; then
             echo "✓ No commits found in pull request."
@@ -54,7 +52,6 @@ jobs:
 
             (
               cd github-development-standards
-              node scripts/validate-commit.js \
-                /tmp/commit-message.txt
+              node scripts/validate-commit.js /tmp/commit-message.txt
             )
-        
+          done
